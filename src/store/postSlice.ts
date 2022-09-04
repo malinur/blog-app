@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 type Post = {
-  id: number
+  id: string
   title: string
+  createdAt: Date
   status: string
   description: string
   imageUrl: string

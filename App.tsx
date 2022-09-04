@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { Provider } from 'react-redux'
 
 import Navigation from './src/infrastructure/navigation'
-import { store } from './src/store'
+import { store } from './src/store/store'
 
 const App: FunctionComponent = () => {
   return (
