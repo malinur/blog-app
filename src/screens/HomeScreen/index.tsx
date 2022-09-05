@@ -15,7 +15,6 @@ export interface PostProps {
   createdAt: Date
   status: string
   image: string
-  body: string
 }
 
 const posts = [
@@ -23,15 +22,13 @@ const posts = [
     id: '11',
     title: 'lalal',
     status: 'published',
-    description: 'lslsls',
-    body: "nside this file, let's create a custom component using TouchableOpacity and Text . This custom button component is going to have props such as ",
+    description: 'nside this file, let\'s create a custom component using TouchableOpacity and Text . This custom button component is going to have props such as ',
   },
   {
     id: '12',
     title: 'lalal',
     status: 'published',
-    description: 'lslsls',
-    body: "nside this file, let's create a custom component using TouchableOpacity and Text . This custom button component is going to have props such as ",
+    description: 'nside this file, let\'s create a custom component using TouchableOpacity and Text . This custom button component is going to have props such as ',
   },
 ]
 const HomeScreen: FunctionComponent = () => {

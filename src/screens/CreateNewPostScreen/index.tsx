@@ -1,10 +1,24 @@
-import TitleText from 'components/Text/TitleText'
+import TitleText from '../../components/Text/TitleText'
 import React, { FunctionComponent, useState } from 'react'
 import { SubmitHandler, useForm, Controller } from 'react-hook-form'
 import Button from '../../components/Button'
 import Input from '../../components/Input'
 import { SafeArea } from '../../components/SafeArea'
-import { DescriptionInput, Dropdown, FormContainer } from './styles'
+import {
+  CloseButton,
+  DescriptionInput,
+  Dropdown,
+  FormContainer,
+  ImageContainer,
+  ImagePicker,
+  PostImage,
+} from './styles'
+import AddIcon from '../../../assets/addIcon'
+import BodyText from '../../components/Text/BodyText'
+import { colors } from '../../infrastructure/theme/colors'
+import CloseIcon from '../../../assets/closeIcon'
+import { TouchableOpacity } from 'react-native'
+import { launchImageLibrary } from 'react-native-image-picker'
 
 type FormData = {
   id: string
@@ -29,9 +43,51 @@ const CreateNewPostScreen: FunctionComponent = () => {
     { label: 'Draft', value: 'draft' },
   ])
 
+  const [imageUri, setImageUri] = useState<any>(null)
+
   const onSubmit: SubmitHandler<FormData> = data => {
     console.log(data)
   }
+
+  const openGallery = () => {
+    let options = {
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    }
+
+    launchImageLibrary(options, response => {
+      console.log('response', response)
+      if (response.didCancel) {
+        console.log('User cancelled image picker')
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error)
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton)
+      } else {
+        if (response.assets) {
+          const source = { uri: response.assets[0].uri }
+          setImageUri(source)
+        }
+      }
+    })
+  }
+
+  const clearImage = () => setImageUri(null)
+
+  const renderImage = imageUri ? (
+    <PostImage source={{ uri: imageUri.uri }}>
+      <TouchableOpacity onPress={() => clearImage()}>
+        <CloseIcon />
+      </TouchableOpacity>
+    </PostImage>
+  ) : (
+    <ImagePicker onPress={() => openGallery()}>
+      <AddIcon />
+    </ImagePicker>
+  )
+
   return (
     <SafeArea>
       <FormContainer>
@@ -48,6 +104,11 @@ const CreateNewPostScreen: FunctionComponent = () => {
           name="title"
           rules={{ required: true }}
         />
+        {errors.title && (
+          <BodyText textStyles={{ color: colors.tdanger, marginTop: 5 }}>
+            Enter title please
+          </BodyText>
+        )}
         <Controller
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -58,6 +119,7 @@ const CreateNewPostScreen: FunctionComponent = () => {
               setOpen={setOpen}
               setValue={onChange}
               setItems={setStatus}
+              placeholder="Select"
             />
           )}
           name="status"
@@ -77,12 +139,18 @@ const CreateNewPostScreen: FunctionComponent = () => {
           name="description"
           rules={{ required: true }}
         />
+        {errors.description && (
+          <BodyText textStyles={{ color: colors.tdanger, marginTop: 5 }}>
+            Enter description please
+          </BodyText>
+        )}
       </FormContainer>
       <FormContainer>
         <TitleText>Photo</TitleText>
 
+        {renderImage}
       </FormContainer>
-      <Button title="New Post" onPress={handleSubmit(onSubmit)} />
+      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
     </SafeArea>
   )
 }
