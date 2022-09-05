@@ -1,96 +1,98 @@
 import TitleText from '../../components/Text/TitleText'
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 import { SubmitHandler, useForm, Controller } from 'react-hook-form'
+import { v4 as uuidv4 } from 'uuid'
+
 import Button from '../../components/Button'
 import Input from '../../components/Input'
 import { SafeArea } from '../../components/SafeArea'
-import {
-  CloseButton,
-  DescriptionInput,
-  Dropdown,
-  FormContainer,
-  ImageContainer,
-  ImagePicker,
-  PostImage,
-} from './styles'
-import AddIcon from '../../../assets/addIcon'
+import { DescriptionInput, FormContainer } from './styles'
 import BodyText from '../../components/Text/BodyText'
 import { colors } from '../../infrastructure/theme/colors'
-import CloseIcon from '../../../assets/closeIcon'
-import { TouchableOpacity } from 'react-native'
-import { launchImageLibrary } from 'react-native-image-picker'
+import ImagePicker from '../../components/ImagePicker'
+import Dropdown from '../../components/Dropdown'
+import { useAppDispatch } from '../../store/hooks'
+import { addPost } from '../../store/postSlice'
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { StackParamList } from '../../infrastructure/navigation/types'
 
-type FormData = {
+export type FormData = {
   id: string
   title: string
   createdAt: Date
   status: string
   description: string
   body: string
-  imageUrl: string
+  imageUri: string
 }
+
+type CreateNewPostScreenProps = StackNavigationProp<
+  StackParamList,
+  'CreateNewPost'
+>
 
 const CreateNewPostScreen: FunctionComponent = () => {
   const {
     handleSubmit,
+    register,
     control,
+    setValue,
     formState: { errors },
   } = useForm<FormData>()
 
-  const [open, setOpen] = useState(false)
-  const [status, setStatus] = useState([
-    { label: 'Published', value: 'published' },
-    { label: 'Draft', value: 'draft' },
-  ])
+  const dispatch = useAppDispatch()
 
-  const [imageUri, setImageUri] = useState<any>(null)
+  const navigation = useNavigation<CreateNewPostScreenProps>()
+
+  const [statusValue, setStatusValue] = useState(null)
+  const [imageUri, setImageUri] = useState('')
+
+  // register('id')
+  // register('status', { minLength: { value: 1, message: 'Enter status' } })
+  // register('createdAt')
+  // register('imageUri', { minLength: { value: 1, message: 'Choose photo' } })
+
+  useEffect(() => {
+    register('id')
+    register('status', { required: 'Enter status' })
+    register('createdAt')
+    register('imageUri', { required: 'Choose photo' })
+  }, [register])
+
+  useEffect(() => {
+    if (imageUri && imageUri.length) {
+      setValue('imageUri', imageUri)
+    }
+  }, [imageUri, setValue])
+
+  useEffect(() => {
+    if (statusValue) {
+      setValue('status', statusValue)
+    }
+  }, [statusValue, setValue])
 
   const onSubmit: SubmitHandler<FormData> = data => {
-    console.log(data)
-  }
-
-  const openGallery = () => {
-    let options = {
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
+    const output = {
+      ...data,
+      id: uuidv4(),
+      createdAt: new Date(Date.now()).toISOString(),
     }
-
-    launchImageLibrary(options, response => {
-      console.log('response', response)
-      if (response.didCancel) {
-        console.log('User cancelled image picker')
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error)
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton)
-      } else {
-        if (response.assets) {
-          const source = { uri: response.assets[0].uri }
-          setImageUri(source)
-        }
-      }
-    })
+    dispatch(addPost(output))
+    navigation.goBack()
+    console.log(output)
   }
-
-  const clearImage = () => setImageUri(null)
-
-  const renderImage = imageUri ? (
-    <PostImage source={{ uri: imageUri.uri }}>
-      <TouchableOpacity onPress={() => clearImage()}>
-        <CloseIcon />
-      </TouchableOpacity>
-    </PostImage>
-  ) : (
-    <ImagePicker onPress={() => openGallery()}>
-      <AddIcon />
-    </ImagePicker>
-  )
 
   return (
     <SafeArea>
       <FormContainer>
+        {/*<Input*/}
+        {/*  control={control}*/}
+        {/*  name="title"*/}
+        {/*  error={errors.title}*/}
+        {/*  placeholder="title"*/}
+        {/*  rule={{ required: 'Enter title' }}*/}
+        {/*/>*/}
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -102,27 +104,17 @@ const CreateNewPostScreen: FunctionComponent = () => {
             />
           )}
           name="title"
-          rules={{ required: true }}
+          rules={{ required: 'Enter title' }}
         />
         {errors.title && (
           <BodyText textStyles={{ color: colors.tdanger, marginTop: 5 }}>
-            Enter title please
+            {errors.title.message}
           </BodyText>
         )}
-        <Controller
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <Dropdown
-              open={open}
-              value={value}
-              items={status}
-              setOpen={setOpen}
-              setValue={onChange}
-              setItems={setStatus}
-              placeholder="Select"
-            />
-          )}
-          name="status"
+        <Dropdown
+          value={statusValue}
+          setValue={setStatusValue}
+          error={errors.status}
         />
         <Controller
           control={control}
@@ -147,8 +139,11 @@ const CreateNewPostScreen: FunctionComponent = () => {
       </FormContainer>
       <FormContainer>
         <TitleText>Photo</TitleText>
-
-        {renderImage}
+        <ImagePicker
+          imageUri={imageUri}
+          setImageUri={setImageUri}
+          error={errors.imageUri}
+        />
       </FormContainer>
       <Button title="Submit" onPress={handleSubmit(onSubmit)} />
     </SafeArea>

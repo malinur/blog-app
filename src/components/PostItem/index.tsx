@@ -7,27 +7,28 @@ import BodyText from '../Text/BodyText'
 import { View } from 'react-native'
 import { Container, HeaderContainer, Image } from './styles'
 import { PostProps } from '../../screens/HomeScreen'
+import moment from 'moment'
 
 const PostItem = ({ data }: { data: PostProps }) => {
+  const date =
+    data.createdAt && moment(data.createdAt).format('YY/MM/DD HH:mm A')
+
   return (
     <Container>
       <HeaderContainer>
         {/*<Image source={{ uri: data.imageUrl }} />*/}
-        <Image source={require('../../../assets/placeholder-image.png')} />
+        <Image source={{ uri: data.imageUri }} />
         <View>
           <TitleText textStyles={{ marginBottom: 12 }}>{data.title}</TitleText>
           <CaptionText
             textStyles={{ marginBottom: 12, color: colors.tsecondary }}>
             Created at:
-            <CaptionText>
-              {' '}
-              {data.createdAt && data.createdAt.toString()}
-            </CaptionText>
+            <CaptionText> {date}</CaptionText>
           </CaptionText>
           <Status status={data.status} />
         </View>
       </HeaderContainer>
-      <BodyText numberOfLines={2}>{data.body}</BodyText>
+      <BodyText numberOfLines={2}>{data.description}</BodyText>
     </Container>
   )
 }

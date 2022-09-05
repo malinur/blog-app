@@ -8,7 +8,7 @@ interface StatusProps {
 }
 
 const Status: FunctionComponent<StatusProps> = ({ status }) => {
-  const isPublished = status.toLowerCase() === 'published'
+  const isPublished = status && status.toLowerCase() === 'published'
 
   return (
     <StatusContainer isPublished={isPublished}>

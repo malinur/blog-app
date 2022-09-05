@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import styled from 'styled-components/native'
 import { colors } from '../../infrastructure/theme/colors'
 import { TextInput, TextInputProps } from 'react-native'
+import { Control, Controller, FieldError } from 'react-hook-form'
+import BodyText from '../Text/BodyText'
+import { FormData } from '../../screens/CreateNewPostScreen'
 
 const InputContainer = styled.View`
   background-color: ${colors.bgraysecondary};

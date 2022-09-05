@@ -9,7 +9,7 @@ export const Container = styled.View`
 export const Image = styled.Image`
   width: 128px;
   height: 128px;
-  background-color: red;
+  background-color: ${colors.bgraysecondary};
   contain: size;
   border-radius: 12px;
   flex-direction: column;

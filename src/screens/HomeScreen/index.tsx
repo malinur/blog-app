@@ -6,38 +6,28 @@ import Button from '../../components/Button'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { StackParamList } from '../../infrastructure/navigation/types'
 import PostItem from '../../components/PostItem'
+import { useAppSelector } from '../../store/hooks'
 
 type HomeScreenProps = StackNavigationProp<StackParamList, 'Home'>
 
 export interface PostProps {
   id: string
   title: string
-  createdAt: Date
+  createdAt: string
   status: string
-  image: string
+  description: string
+  imageUri: string
 }
 
-const posts = [
-  {
-    id: '11',
-    title: 'lalal',
-    status: 'published',
-    description: 'nside this file, let\'s create a custom component using TouchableOpacity and Text . This custom button component is going to have props such as ',
-  },
-  {
-    id: '12',
-    title: 'lalal',
-    status: 'published',
-    description: 'nside this file, let\'s create a custom component using TouchableOpacity and Text . This custom button component is going to have props such as ',
-  },
-]
 const HomeScreen: FunctionComponent = () => {
   const navigation = useNavigation<HomeScreenProps>()
+
+  const post = useAppSelector(state => state.post)
 
   return (
     <SafeArea>
       <FlatList
-        data={posts}
+        data={post.posts}
         renderItem={({ item }) => <PostItem data={item} />}
         keyExtractor={item => item.id}
       />
