@@ -1,5 +1,6 @@
 import styled from 'styled-components/native'
 import DropDownPicker from 'react-native-dropdown-picker'
+
 import { colors } from '../../infrastructure/theme/colors'
 
 export const DropdownInput = styled(DropDownPicker).attrs({

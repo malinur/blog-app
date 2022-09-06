@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
+
 import HomeScreen from '../../screens/HomeScreen'
 import CreateNewPostScreen from '../../screens/CreateNewPostScreen'
 import { StackParamList } from './types'
@@ -14,6 +15,7 @@ const Navigation: FunctionComponent = () => {
       screenOptions={{
         headerBackTitleVisible: false,
         headerTintColor: colors.tprimary,
+        headerTitleAlign: 'center',
       }}>
       <Stack.Screen
         name="Home"

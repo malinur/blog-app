@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react'
+
 import { StatusContainer } from './styles'
 import { colors } from '../../infrastructure/theme/colors'
 import BodyText from '../Text/BodyText'

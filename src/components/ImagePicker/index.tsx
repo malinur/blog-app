@@ -1,16 +1,17 @@
 import React, { FunctionComponent, useState } from 'react'
 import { TouchableOpacity, View } from 'react-native'
+import { FieldError } from 'react-hook-form'
+import { launchImageLibrary } from 'react-native-image-picker'
+
 import CloseIcon from '../../../assets/closeIcon'
 import AddIcon from '../../../assets/addIcon'
-import { launchImageLibrary } from 'react-native-image-picker'
 import { ImagePickerButton, PostImage } from './styles'
-import { FieldError, UseFormSetValue } from 'react-hook-form'
 import BodyText from '../Text/BodyText'
 import { colors } from '../../infrastructure/theme/colors'
 
 interface ImagePickerProps {
   imageUri: string
-  setImageUri: (value: string | ((prevVar: string) => string)) => void
+  setImageUri: (value: string | undefined | ((prevVar: string) => string)) => void
   error?: FieldError
 }
 
@@ -19,7 +20,6 @@ const ImagePicker: FunctionComponent<ImagePickerProps> = ({
   setImageUri,
   error,
 }) => {
-  // const [imageUri, setImageUri] = useState('')
 
   const openGallery = () => {
     let options = {
@@ -30,7 +30,7 @@ const ImagePicker: FunctionComponent<ImagePickerProps> = ({
     }
 
     launchImageLibrary(options, response => {
-      console.log('response', response)
+      // console.log('response', response)
       if (response.didCancel) {
         console.log('User cancelled image picker')
       } else if (response.error) {
@@ -40,7 +40,6 @@ const ImagePicker: FunctionComponent<ImagePickerProps> = ({
       } else {
         if (response.assets) {
           const source = response.assets[0].uri
-          console.log(source)
           setImageUri(source)
         }
       }

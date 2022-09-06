@@ -1,4 +1,5 @@
 import styled from 'styled-components/native'
+
 import { colors } from '../../infrastructure/theme/colors'
 
 export const ImagePickerButton = styled.TouchableOpacity`

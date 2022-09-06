@@ -1,13 +1,14 @@
 import React from 'react'
-import { colors } from '../../infrastructure/theme/colors'
-import TitleText from '../Text/TitleText'
-import CaptionText from '../Text/CaptionText'
-import Status from '../Status'
-import BodyText from '../Text/BodyText'
 import { View } from 'react-native'
-import { Container, HeaderContainer, Image } from './styles'
-import { PostProps } from '../../screens/HomeScreen'
 import moment from 'moment'
+
+import { colors } from '../../infrastructure/theme/colors'
+import { Container, HeaderContainer, Image } from './styles'
+import TitleText from '../Text/TitleText'
+import Status from '../Status'
+import CaptionText from '../Text/CaptionText'
+import BodyText from '../Text/BodyText'
+import { PostProps } from '../../screens/HomeScreen'
 
 const PostItem = ({ data }: { data: PostProps }) => {
   const date =
@@ -16,7 +17,6 @@ const PostItem = ({ data }: { data: PostProps }) => {
   return (
     <Container>
       <HeaderContainer>
-        {/*<Image source={{ uri: data.imageUrl }} />*/}
         <Image source={{ uri: data.imageUri }} />
         <View>
           <TitleText textStyles={{ marginBottom: 12 }}>{data.title}</TitleText>

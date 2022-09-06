@@ -3,10 +3,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 type Post = {
   id: string
   title: string
-  createdAt: Date
+  createdAt: string
   status: string
   description: string
-  imageUrl: string
+  imageUri: string
 }
 
 export interface PostState {

@@ -4,6 +4,6 @@ import { colors } from '../infrastructure/theme/colors'
 
 export const SafeArea = styled(SafeAreaView)`
   flex: 1;
-  ${StatusBar.currentHeight && `margin-top: ${StatusBar.currentHeight}px`};
-  background-color: ${colors.bgray};
+  // ${StatusBar.currentHeight && `margin-top: ${StatusBar.currentHeight}px`};
+  // background-color: ${colors.bgray};
 `

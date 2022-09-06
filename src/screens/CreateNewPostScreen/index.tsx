@@ -1,6 +1,8 @@
 import TitleText from '../../components/Text/TitleText'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import { SubmitHandler, useForm, Controller } from 'react-hook-form'
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import { v4 as uuidv4 } from 'uuid'
 
 import Button from '../../components/Button'
@@ -13,24 +15,20 @@ import ImagePicker from '../../components/ImagePicker'
 import Dropdown from '../../components/Dropdown'
 import { useAppDispatch } from '../../store/hooks'
 import { addPost } from '../../store/postSlice'
-import { useNavigation } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
 import { StackParamList } from '../../infrastructure/navigation/types'
 
 export type FormData = {
   id: string
   title: string
-  createdAt: Date
+  createdAt: string
   status: string
   description: string
   body: string
   imageUri: string
 }
 
-type CreateNewPostScreenProps = StackNavigationProp<
-  StackParamList,
-  'CreateNewPost'
->
+type CreateNewPostScreenProps = StackNavigationProp<StackParamList,
+  'CreateNewPost'>
 
 const CreateNewPostScreen: FunctionComponent = () => {
   const {
@@ -75,12 +73,13 @@ const CreateNewPostScreen: FunctionComponent = () => {
   const onSubmit: SubmitHandler<FormData> = data => {
     const output = {
       ...data,
-      id: uuidv4(),
+      id: new Date(Date.now()).toISOString() + (Math.random() * 16),
       createdAt: new Date(Date.now()).toISOString(),
     }
+    console.log('output', output)
+
     dispatch(addPost(output))
     navigation.goBack()
-    console.log(output)
   }
 
   return (

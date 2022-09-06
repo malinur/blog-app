@@ -1,7 +1,8 @@
 import React, { FunctionComponent, useState } from 'react'
-import { ValueType } from 'react-native-dropdown-picker'
-import { DropdownContainer, DropdownInput } from './styles'
 import { FieldError } from 'react-hook-form'
+import { ValueType } from 'react-native-dropdown-picker'
+
+import { DropdownContainer, DropdownInput } from './styles'
 import BodyText from '../Text/BodyText'
 import { colors } from '../../infrastructure/theme/colors'
 
@@ -11,7 +12,11 @@ interface DropdownProps {
   error?: FieldError
 }
 
-const Dropdown: FunctionComponent<DropdownProps> = ({ value, setValue, error }) => {
+const Dropdown: FunctionComponent<DropdownProps> = ({
+  value,
+  setValue,
+  error,
+}) => {
   const [open, setOpen] = useState(false)
   const [status, setStatus] = useState([
     { label: 'Published', value: 'Published' },
@@ -29,7 +34,7 @@ const Dropdown: FunctionComponent<DropdownProps> = ({ value, setValue, error }) 
         setItems={setStatus}
         placeholder="Select"
       />
-      { error && (
+      {error && (
         <BodyText textStyles={{ color: colors.tdanger, marginTop: 5 }}>
           {error.message}
         </BodyText>
