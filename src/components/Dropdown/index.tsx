@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, {
+  Dispatch,
+  FunctionComponent,
+  SetStateAction,
+  useState,
+} from 'react'
 import { FieldError } from 'react-hook-form'
 import { ValueType } from 'react-native-dropdown-picker'
 
@@ -8,7 +13,7 @@ import { colors } from '../../infrastructure/theme/colors'
 
 interface DropdownProps {
   value: ValueType | null
-  setValue: (value: ValueType | ((prevVar: ValueType) => ValueType)) => void
+  setValue: Dispatch<SetStateAction<null>>
   error?: FieldError
 }
 

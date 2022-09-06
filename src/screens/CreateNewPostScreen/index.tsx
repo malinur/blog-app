@@ -46,11 +46,6 @@ const CreateNewPostScreen: FunctionComponent = () => {
   const [statusValue, setStatusValue] = useState(null)
   const [imageUri, setImageUri] = useState('')
 
-  // register('id')
-  // register('status', { minLength: { value: 1, message: 'Enter status' } })
-  // register('createdAt')
-  // register('imageUri', { minLength: { value: 1, message: 'Choose photo' } })
-
   useEffect(() => {
     register('id')
     register('status', { required: 'Enter status' })
@@ -85,13 +80,6 @@ const CreateNewPostScreen: FunctionComponent = () => {
   return (
     <SafeArea>
       <FormContainer>
-        {/*<Input*/}
-        {/*  control={control}*/}
-        {/*  name="title"*/}
-        {/*  error={errors.title}*/}
-        {/*  placeholder="title"*/}
-        {/*  rule={{ required: 'Enter title' }}*/}
-        {/*/>*/}
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (

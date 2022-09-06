@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, {
+  Dispatch,
+  FunctionComponent,
+  SetStateAction,
+  useState,
+} from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { FieldError } from 'react-hook-form'
 import { launchImageLibrary } from 'react-native-image-picker'
@@ -10,8 +15,8 @@ import BodyText from '../Text/BodyText'
 import { colors } from '../../infrastructure/theme/colors'
 
 interface ImagePickerProps {
-  imageUri: string
-  setImageUri: (value: string | undefined | ((prevVar: string) => string)) => void
+  imageUri: SetStateAction<string> | string | undefined
+  setImageUri: Dispatch<SetStateAction<string>>
   error?: FieldError
 }
 
@@ -20,7 +25,6 @@ const ImagePicker: FunctionComponent<ImagePickerProps> = ({
   setImageUri,
   error,
 }) => {
-
   const openGallery = () => {
     let options = {
       storageOptions: {
@@ -50,7 +54,7 @@ const ImagePicker: FunctionComponent<ImagePickerProps> = ({
 
   return (
     <View>
-      {imageUri.length ? (
+      {imageUri && imageUri.length ? (
         <PostImage source={{ uri: imageUri }}>
           <TouchableOpacity onPress={() => clearImage()}>
             <CloseIcon />
